@@ -38,6 +38,7 @@ TodoList.propTypes = {
   ).isRequired,
   filterType: PropTypes.oneOf(["all", "pending", "completed"]).isRequired,
   toggleEvent: PropTypes.func.isRequired,
+  deleteTodo: PropTypes.func.isRequired
 };
 
 export default memo(TodoList);

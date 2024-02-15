@@ -20,7 +20,7 @@ export default class Home extends Component {
       ({ todoList }) => ({
         todoList: [
           ...todoList,
-          { id: new Date().valueOf(), text: inputText.value },
+          { id: new Date().valueOf(), text: inputText.value, isDone: false },
         ],
       }),
       () => {
@@ -56,7 +56,7 @@ export default class Home extends Component {
   };
 
   render() {
-    const { todoText, todoList, filterType } = this.state;
+    const {  todoList, filterType } = this.state;
     return (
       <div className="flex flex-col gap-4 h-screen">
         <div className="flex items-center flex-col m-8">
@@ -67,6 +67,7 @@ export default class Home extends Component {
           todoList={todoList}
           filterType={filterType}
           toggleEvent={this.toggleEvent}
+          deleteTodo={this.deleteTodo}
         />
         <TodoFilter
           filterType={filterType}
