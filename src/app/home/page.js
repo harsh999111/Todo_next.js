@@ -13,17 +13,12 @@ export default class Home extends Component {
 
   inputRef = createRef();
 
-
   async componentDidMount() {
     try {
       const res = await fetch("http://localhost:4000/todoList");
       const json = await res.json();
-      this.setState({todoList:json});
-      
-    } catch (error) {
-      
-    }
-
+      this.setState({ todoList: json });
+    } catch (error) {}
   }
   addTodo = async (event) => {
     try {
@@ -32,32 +27,32 @@ export default class Home extends Component {
         method: "POST",
         body: JSON.stringify({
           text: inputText.value,
-          isDone: false
+          isDone: false,
         }),
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        }
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       });
-  
-   
-  
+
       const newTodo = await res.json();
-  
-      this.setState(({ todoList }) => ({
-        todoList: [
-          ...todoList,
-          { id: new Date().valueOf(), text: inputText.value, isDone: false },
-          newTodo
-        ],
-      }), () => {
-        inputText.value = "";
-      });
+
+      this.setState(
+        ({ todoList }) => ({
+          todoList: [
+            ...todoList,
+            { id: new Date().valueOf(), text: inputText.value, isDone: false },
+            newTodo,
+          ],
+        }),
+        () => {
+          inputText.value = "";
+        }
+      );
     } catch (error) {
-      console.error('Error adding todo:', error);
+      console.error("Error adding todo:", error);
     }
   };
-  
 
   toggleEvent = async (item) => {
     try {
@@ -65,44 +60,38 @@ export default class Home extends Component {
         method: "PUT",
         body: JSON.stringify({
           ...item,
-          isDone: !item.isDone
+          isDone: !item.isDone,
         }),
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        }
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
       });
 
-  
       const updatedTodo = await res.json();
-  
+
       this.setState(({ todoList }) => {
-        const updatedList = todoList.map(todo => {
+        const updatedList = todoList.map((todo) => {
           if (todo.id === updatedTodo.id) {
             return updatedTodo;
           } else {
             return todo;
           }
         });
-  
+
         return {
-          todoList: updatedList
+          todoList: updatedList,
         };
       });
     } catch (error) {
-      console.error('Error toggling todo:', error);
+      console.error("Error toggling todo:", error);
     }
   };
-  
 
   deleteTodo = async (item) => {
     try {
-      
-
-       await fetch(`http://localhost:4000/todoList/${item.id}`, {
+      await fetch(`http://localhost:4000/todoList/${item.id}`, {
         method: "DELETE",
-       
-      
       });
       this.setState(({ todoList }) => {
         const index = todoList.findIndex((x) => x.id === item.id);
@@ -110,9 +99,7 @@ export default class Home extends Component {
           todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
         };
       });
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   changeFilterType = (filterType) => {
@@ -141,7 +128,3 @@ export default class Home extends Component {
     );
   }
 }
-
-
-
-
